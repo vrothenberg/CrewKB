@@ -1,0 +1,113 @@
+# CrewKB Project Intelligence
+
+This file captures important patterns, preferences, and project intelligence for the CrewKB project. It serves as a learning journal to help me work more effectively with the user and the project.
+
+## Project Patterns
+
+### Architecture Patterns
+
+1. **Agent-Based Architecture**: The project uses specialized agents with focused roles rather than general-purpose agents. Each agent has a specific responsibility in the knowledge base article creation process.
+
+2. **Workflow Pattern**: The article creation process is organized into distinct phases (research, content creation, review) with clear transitions between them.
+
+3. **Tool Composition Pattern**: Agents leverage specialized tools for specific tasks, such as search, content creation, and validation.
+
+4. **Model-View-Controller (MVC)**: The system follows an MVC pattern with Pydantic models defining the structure, output formatters presenting articles, and the workflow manager controlling the process.
+
+5. **Factory Pattern**: Factory patterns are used to create different types of agents, tools, and workflows based on specific requirements.
+
+### Implementation Patterns
+
+1. **Modular Design**: The project follows a modular design with clear separation of concerns between components.
+
+2. **YAML Configuration**: Agent and task definitions are stored in YAML files for better maintainability.
+
+3. **Pydantic Models**: Article structure is defined using Pydantic models for validation and serialization.
+
+4. **CLI-First Approach**: The primary interface is a command-line tool, with potential for a web interface in the future.
+
+5. **Dual Storage Format**: Articles are stored in both JSON (for programmatic access) and Markdown (for human readability).
+
+## User Preferences
+
+1. **Technology Preferences**: The user prefers using uv for dependency management and virtual environment creation.
+
+2. **API Preferences**: The user prefers free, open-source services where possible to minimize costs.
+
+3. **Documentation Style**: The user values comprehensive documentation with clear structure and visual aids (mermaid diagrams).
+
+4. **Implementation Approach**: The user prefers a phased implementation approach, starting with a solid foundation before adding more complex features.
+
+5. **Article Structure**: The user has defined a specific structure for knowledge base articles using Pydantic models with various sections.
+
+## Critical Implementation Paths
+
+1. **Article Structure Definition**: The Pydantic models defining the article structure are a critical foundation for the entire system.
+
+2. **Agent System Implementation**: The specialized agents are central to the knowledge base creation process and must be carefully designed.
+
+3. **Search Tool Integration**: The ability to search and gather information from multiple sources is essential for article creation.
+
+4. **Workflow Orchestration**: The coordination of agents and tasks in different workflows is critical for the system's functionality.
+
+5. **Quality Assurance**: Mechanisms for ensuring accuracy and detecting hallucinations are essential for reliable content.
+
+## Known Challenges
+
+1. **API Integration**: Managing multiple external APIs with different rate limits, authentication methods, and data formats.
+
+2. **LLM Limitations**: Dealing with context window limitations when processing extensive research data.
+
+3. **Quality Assurance**: Ensuring the accuracy and reliability of generated content.
+
+4. **Performance Optimization**: Minimizing latency and resource usage in the article creation process.
+
+5. **API Key Management**: Securely handling API keys while allowing for easy configuration.
+
+## Evolution of Project Decisions
+
+1. **Initial Focus**: The project initially focuses on establishing the memory bank and project structure before implementing functionality.
+
+2. **Phased Implementation**: The implementation is divided into phases (foundation, agent development, tool development, workflow integration, testing) to manage complexity.
+
+3. **Specialized Agents**: The decision to create specialized agents with focused roles rather than general-purpose agents was made to align with CrewAI best practices.
+
+4. **Multiple Workflows**: Different workflows for different types of biomedical topics (diseases, biomarkers, lab tests) were chosen to accommodate unique requirements.
+
+5. **Storage Strategy**: The decision to store articles in both JSON and Markdown formats was made to support both programmatic access and human readability.
+
+## Tool Usage Patterns
+
+1. **Search Tools**: Used by research agents to gather information from multiple sources.
+
+2. **Content Tools**: Used by content creation agents to structure and format articles.
+
+3. **Validation Tools**: Used by review agents to ensure quality and accuracy.
+
+4. **CLI Tools**: Used by users to interact with the system and initiate article creation.
+
+5. **Storage Tools**: Used to persist articles in different formats and manage versioning.
+
+## Project-Specific Terminology
+
+1. **Knowledge Base Article**: A structured document containing comprehensive information on a biomedical topic.
+
+2. **Agent**: A specialized AI entity with a specific role in the article creation process.
+
+3. **Crew**: A group of agents working together on a specific task or workflow.
+
+4. **Workflow**: A defined sequence of tasks and agent interactions for creating a specific type of article.
+
+5. **Tool**: A specialized capability that agents can use to perform specific tasks.
+
+## Memory Bank Usage
+
+1. **Regular Updates**: The memory bank should be updated regularly to reflect the current state of the project.
+
+2. **Comprehensive Documentation**: All aspects of the project should be documented in the appropriate memory bank files.
+
+3. **Clear Structure**: Each memory bank file has a specific purpose and structure that should be maintained.
+
+4. **Visual Aids**: Mermaid diagrams are used to visualize system architecture and workflows.
+
+5. **Progress Tracking**: The progress.md file is used to track the status of different components and milestones.

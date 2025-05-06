@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "crewkb"
+version = "0.1.0"
+description = "A knowledge base creation system for biomedical topics using Crew.AI"
+readme = "README.md"
+authors = [
+    {name = "CrewKB Team", email = "example@example.com"}
+]
+license = {text = "MIT"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "crewai",
+    "crewai[tools]",
+    "pydantic",
+    "typer",
+    "requests",
+    "python-dotenv",
+    "markdown",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "flake8",
+    "black",
+    "isort",
+]
+
+[project.scripts]
+crewkb = "crewkb.cli:main"
+
+[tool.setuptools]
+packages = ["crewkb"]
+
+[tool.black]
+line-length = 79
+target-version = ["py310"]
+include = '\.pyi?$'
+
+[tool.isort]
+profile = "black"
+line_length = 79
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
