@@ -1,0 +1,70 @@
+description: >
+  Identify, analyze, and summarize the most relevant and up-to-date clinical guidelines, 
+  practice recommendations, and consensus statements related to {topic}.
+  
+  Focus on guidelines from authoritative organizations such as:
+  - World Health Organization (WHO)
+  - National Institutes of Health (NIH)
+  - Centers for Disease Control and Prevention (CDC)
+  - American Medical Association (AMA)
+  - American College of Physicians (ACP)
+  - European Society of Cardiology (ESC)
+  - National Institute for Health and Care Excellence (NICE)
+  - Specialty-specific medical societies relevant to {topic}
+  
+  For each guideline or recommendation, extract:
+  - Publishing organization
+  - Publication date and version
+  - Target population
+  - Key recommendations
+  - Strength of recommendations (using the guideline's own grading system)
+  - Quality of evidence supporting the recommendations
+  - Any controversies or areas of uncertainty
+  - Updates or changes from previous versions
+  
+  Compare and contrast recommendations from different organizations, noting:
+  - Areas of consensus across guidelines
+  - Differences in recommendations and possible reasons for these differences
+  - Regional variations in guidelines (e.g., US vs. European guidelines)
+  - Evolution of recommendations over time
+  
+  Ensure all information is properly cited with:
+  - Organization name
+  - Guideline title
+  - Publication year
+  - Version or edition
+  - URL or DOI
+  
+  If {topic} is a disease or condition, focus on guidelines related to:
+  - Screening and prevention
+  - Diagnostic criteria and workup
+  - Treatment approaches
+  - Monitoring and follow-up
+  - Special populations considerations
+  
+  If {topic} is a biomarker or laboratory test, focus on guidelines related to:
+  - Indications for testing
+  - Testing protocols
+  - Interpretation of results
+  - Follow-up recommendations
+  - Cost-effectiveness considerations
+
+expected_output: >
+  A comprehensive summary of clinical guidelines and recommendations related to {topic},
+  organized by organization and subtopic, with proper citations and an assessment of the
+  strength of recommendations and quality of evidence.
+  
+  The summary should include:
+  
+  1. An overview of the current guideline landscape for {topic}
+  2. Key recommendations from major organizations
+  3. A comparison of recommendations across different guidelines
+  4. Areas of consensus among guidelines
+  5. Differences or controversies between guidelines
+  6. The most recent updates or changes to guidelines
+  7. A complete bibliography with all guidelines properly cited
+  
+  The information should be presented in a clear, structured format that can be
+  easily incorporated into a knowledge base article.
+
+agent: clinical_guidelines_analyst

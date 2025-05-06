@@ -20,7 +20,7 @@ CrewKB is built using a stack of modern Python technologies, with a focus on AI 
 
 1. **Large Language Models (LLMs)**: The underlying AI models that power the agents, accessed through various providers.
 
-2. **OpenAI API**: Used for accessing GPT models for content generation and analysis.
+2. **Google Gemini API**: Used for accessing Gemini models for content generation and analysis, particularly Gemini 2.0 Flash for its balance of quality and efficiency.
 
 3. **Embeddings**: Vector representations of text used for semantic search and similarity comparisons.
 
@@ -112,8 +112,12 @@ The project uses environment variables for configuration, stored in a `.env` fil
 
 ```
 # API Keys
-OPENAI_API_KEY=sk-...
+GEMINI_API_KEY=...
 SERPER_API_KEY=...
+
+# LLM Configuration
+DEFAULT_LLM_MODEL=gemini/gemini-2.0-flash-exp
+DEFAULT_LLM_TEMPERATURE=0.7
 
 # Configuration
 LOG_LEVEL=INFO
@@ -150,7 +154,7 @@ OUTPUT_DIR=./output
 
 ### External Dependencies
 
-1. **OpenAI API**: Required for accessing GPT models.
+1. **Google Gemini API**: Required for accessing Gemini models.
 
 2. **SerperDev API**: Required for Google search capabilities.
 

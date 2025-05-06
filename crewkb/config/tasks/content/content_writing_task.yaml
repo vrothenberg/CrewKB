@@ -1,0 +1,89 @@
+description: >
+  Write clear, accurate, and accessible content for a {article_type} knowledge base article 
+  on {topic} based on the article outline and research findings, ensuring the information 
+  is presented at an appropriate reading level for a general audience while maintaining 
+  medical accuracy.
+  
+  Your task involves:
+  
+  1. Writing content that:
+     - Follows the article outline created by the Medical Content Architect
+     - Incorporates key information from the research synthesis
+     - Is written at an 8th-10th grade reading level
+     - Uses plain language alternatives for medical terminology when possible
+     - Provides brief definitions for necessary technical terms
+     - Breaks complex concepts into digestible components
+  
+  2. Adapting your writing style to the specific {article_type}:
+     
+     For disease articles:
+     - Provide practical, actionable information for patients and caregivers
+     - Explain symptoms in clear terms
+     - Describe treatments in a way that helps readers understand their options
+     - Provide guidance on living with the condition
+     - Include clear information about when medical attention is needed
+     
+     For biomarker articles:
+     - Explain what the biomarker indicates in terms patients can understand
+     - Focus on the practical implications of test results
+     - Avoid unnecessary technical details
+     - Help readers understand when and why the biomarker might be tested
+     - Explain what the results might mean for their health
+     
+     For lab test articles:
+     - Walk readers through what to expect during the test
+     - Explain how to prepare for the test
+     - Help readers understand how to interpret results
+     - Address common concerns
+     - Explain why the test might be ordered
+  
+  3. Maintaining a consistent tone that is:
+     - Professional but conversational
+     - Authoritative without being condescending
+     - Empathetic while remaining objective
+     - Consistent across all article sections
+  
+  4. Ensuring accuracy by:
+     - Representing the state of medical knowledge honestly
+     - Clearly distinguishing between well-established facts and areas with less certainty
+     - Avoiding definitive statements about contentious or speculative claims
+     - Being transparent about conflicting information when it exists
+     - Including appropriate citations for all factual statements
+  
+  5. Structuring content to:
+     - Prioritize practical, actionable information
+     - Present the most important information first
+     - Use headings and subheadings to organize information
+     - Include bullet points or numbered lists for clarity when appropriate
+     - Use examples to illustrate abstract concepts
+  
+  6. Flagging any areas where:
+     - You're uncertain about the accuracy of information
+     - There are conflicting findings that need to be addressed
+     - Additional research or expert review may be needed
+     - Information is highly technical and may need further simplification
+
+expected_output: >
+  Complete, well-written content for a {article_type} knowledge base article on {topic} 
+  that follows the article outline and incorporates the research findings.
+  
+  The content should:
+  
+  1. Be written at an 8th-10th grade reading level
+  2. Use plain language with brief definitions for necessary technical terms
+  3. Be organized according to the article outline
+  4. Be adapted to the specific article type (disease, biomarker, or lab test)
+  5. Maintain a professional but conversational tone
+  6. Include appropriate citations for all factual statements
+  7. Clearly distinguish between well-established facts and areas with less certainty
+  8. Prioritize practical, actionable information
+  
+  The content should be ready for review by the Medical Citation Specialist and should 
+  include notes on any areas where you're uncertain about the accuracy of information 
+  or where additional research or expert review may be needed.
+
+agent: medical_content_writer
+
+context:
+  - data_synthesis_task
+  - content_planning_task

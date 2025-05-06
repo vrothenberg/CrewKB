@@ -1,0 +1,39 @@
+description: >
+  Review the knowledge base article on {topic} for medical accuracy.
+  
+  Your task is to thoroughly review the article content and verify the factual accuracy of all medical information.
+  
+  Specifically, you should:
+  1. Verify that all factual statements are accurate and supported by current medical knowledge
+  2. Check that all claims are properly cited with reliable sources
+  3. Identify any outdated information that needs to be updated
+  4. Flag any statements that are potentially incorrect or misleading
+  5. Ensure that areas of medical uncertainty or conflicting evidence are properly acknowledged
+  6. Verify that the content reflects current medical consensus where applicable
+  7. Identify any areas where additional evidence or citations are needed
+  8. Check for consistency in medical terminology and concepts throughout the article
+  
+  For each issue you identify, provide:
+  - The specific section and statement that needs correction
+  - A detailed explanation of the issue
+  - A recommended correction or improvement
+  - The level of importance (critical, major, minor)
+  
+  Your review should be thorough and detailed, focusing on ensuring that all medical information
+  in the article is accurate, up-to-date, and properly supported by evidence.
+
+expected_output: >
+  A comprehensive accuracy review report that includes:
+  
+  1. Overall assessment of the article's medical accuracy
+  2. Detailed list of identified issues, organized by section
+  3. Specific recommendations for corrections or improvements
+  4. Assessment of citation quality and completeness
+  5. Identification of areas requiring additional evidence or clarification
+  
+  The report should be structured, detailed, and actionable, providing clear guidance
+  for improving the medical accuracy of the article.
+
+agent: medical_accuracy_reviewer
+
+context: []

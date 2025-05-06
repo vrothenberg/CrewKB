@@ -15,26 +15,28 @@ load_dotenv()
 
 # Base directories
 BASE_DIR = Path(__file__).parent.parent.absolute()
-OUTPUT_DIR = os.getenv("OUTPUT_DIR", Path(BASE_DIR) / "output")
-KNOWLEDGE_DIR = os.getenv("KNOWLEDGE_DIR", Path(BASE_DIR) / "knowledge")
+OUTPUT_DIR = Path(os.getenv("OUTPUT_DIR", str(BASE_DIR / "output")))
+KNOWLEDGE_DIR = Path(os.getenv("KNOWLEDGE_DIR", str(BASE_DIR / "knowledge")))
 
 # Ensure directories exist
 OUTPUT_DIR.mkdir(exist_ok=True, parents=True)
 KNOWLEDGE_DIR.mkdir(exist_ok=True, parents=True)
 
 # API keys
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 PUBMED_API_KEY = os.getenv("PUBMED_API_KEY")
 SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
 
 # LLM configuration
-DEFAULT_LLM_MODEL = os.getenv("DEFAULT_LLM_MODEL", "gpt-4")
-DEFAULT_LLM_TEMPERATURE = float(os.getenv("DEFAULT_LLM_TEMPERATURE", "0.0"))
+DEFAULT_LLM_MODEL = os.getenv(
+    "DEFAULT_LLM_MODEL", "gemini/gemini-2.0-flash-exp"
+)
+DEFAULT_LLM_TEMPERATURE = float(os.getenv("DEFAULT_LLM_TEMPERATURE", "0.7"))
 
 # Logging configuration
 LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
-LOG_FILE = os.getenv("LOG_FILE", Path(BASE_DIR) / "logs" / "crewkb.log")
+LOG_FILE = Path(os.getenv("LOG_FILE", str(BASE_DIR / "logs" / "crewkb.log")))
 
 # Ensure log directory exists
 LOG_FILE.parent.mkdir(exist_ok=True, parents=True)
@@ -83,13 +85,13 @@ def get_api_key(service: str) -> Optional[str]:
     Get the API key for a specific service.
 
     Args:
-        service: The name of the service (e.g., "openai", "serper").
+        service: The name of the service (e.g., "gemini", "serper").
 
     Returns:
         The API key if available, None otherwise.
     """
     keys = {
-        "openai": OPENAI_API_KEY,
+        "gemini": GEMINI_API_KEY,
         "serper": SERPER_API_KEY,
         "pubmed": PUBMED_API_KEY,
         "semantic_scholar": SEMANTIC_SCHOLAR_API_KEY,
@@ -118,8 +120,8 @@ def validate_config() -> bool:
         True if the configuration is valid, False otherwise.
     """
     # Check if required API keys are available
-    if not OPENAI_API_KEY:
-        print("Warning: OPENAI_API_KEY is not set.")
+    if not GEMINI_API_KEY:
+        print("Warning: GEMINI_API_KEY is not set.")
         return False
 
     # Check if output directory is writable

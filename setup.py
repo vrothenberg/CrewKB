@@ -2,41 +2,77 @@
 """
 Setup script for the CrewKB project.
 
-This script is a wrapper around the setup utilities in crewkb.utils.setup.
+This script provides the necessary package configuration for setuptools.
+For development environment setup, use the install.sh script instead.
 """
 
-import sys
-from pathlib import Path
+from setuptools import setup, find_packages
 
-# Add the current directory to the Python path
-sys.path.insert(0, str(Path(__file__).parent))
+# Package metadata
+PACKAGE_NAME = "crewkb"
+VERSION = "0.1.0"
+# Split description to avoid line length issues
+DESCRIPTION = (
+    "A knowledge base creation system for biomedical topics "
+    "using Crew.AI"
+)
+AUTHOR = "CrewKB Team"
+AUTHOR_EMAIL = "example@example.com"
+URL = ""
+LICENSE = "MIT"
+PYTHON_REQUIRES = ">=3.10"
 
-try:
-    from crewkb.utils.setup import setup_environment
-except ImportError:
-    print("Error: Could not import setup_environment from utils.setup.")
-    print("Make sure you're running this script from the project root.")
-    sys.exit(1)
+# Dependencies
+INSTALL_REQUIRES = [
+    "crewai[tools]",
+    "pydantic",
+    "typer",
+    "requests",
+    "python-dotenv",
+    "markdown",
+    "langchain",
+    "langchain-community",
+    "langchain-core",
+    "biopython",  # Added for PubMed search
+]
 
+EXTRAS_REQUIRE = {
+    "dev": [
+        "pytest",
+        "flake8",
+        "black",
+        "isort",
+    ],
+}
 
-def main():
-    """
-    Main entry point for the setup script.
-    """
-    print("Setting up the CrewKB development environment...")
-    success = setup_environment()
-    
-    if success:
-        print("\nSetup completed successfully!")
-        print("\nTo activate the virtual environment, run:")
-        print("  source .venv/bin/activate  # On Unix/macOS")
-        print("  .venv\\Scripts\\activate  # On Windows")
-        print("\nTo run the CLI, use:")
-        print("  python -m crewkb.cli --help")
-    else:
-        print("\nSetup failed. Please check the error messages above.")
-        sys.exit(1)
-
+# Entry points
+ENTRY_POINTS = {
+    "console_scripts": [
+        "crewkb=crewkb.cli:main",
+    ],
+}
 
 if __name__ == "__main__":
-    main()
+    setup(
+        name=PACKAGE_NAME,
+        version=VERSION,
+        description=DESCRIPTION,
+        author=AUTHOR,
+        author_email=AUTHOR_EMAIL,
+        url=URL,
+        license=LICENSE,
+        packages=find_packages(),
+        python_requires=PYTHON_REQUIRES,
+        install_requires=INSTALL_REQUIRES,
+        extras_require=EXTRAS_REQUIRE,
+        entry_points=ENTRY_POINTS,
+        classifiers=[
+            "Programming Language :: Python :: 3",
+            "Programming Language :: Python :: 3.10",
+            "License :: OSI Approved :: MIT License",
+            "Operating System :: OS Independent",
+            "Development Status :: 3 - Alpha",
+            "Intended Audience :: Science/Research",
+            "Topic :: Scientific/Engineering :: Medical Science Apps.",
+        ],
+    )

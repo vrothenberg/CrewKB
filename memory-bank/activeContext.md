@@ -2,145 +2,192 @@
 
 ## Current Work Focus
 
-The current focus of the CrewKB project is on establishing the foundation for the knowledge base creation system. This includes:
+The current focus of the CrewKB project is on migrating to Google's Gemini models and testing the end-to-end workflow for knowledge base article creation using Crew.AI. This includes:
 
-1. **Project Setup**: Creating the basic project structure, setting up the development environment, and establishing the memory bank.
+1. **Testing and Refinement**: Testing the end-to-end workflow that combines research, content creation, review, and quality assessment to ensure it works reliably and produces high-quality articles.
 
-2. **Core Architecture Design**: Defining the system architecture, component relationships, and workflow patterns.
+2. **Performance Optimization**: Identifying and addressing bottlenecks in the article creation process to reduce latency and resource usage.
 
-3. **Agent System Design**: Designing the specialized agents that will collaborate to create knowledge base articles.
+3. **Documentation**: Updating code documentation, creating user guides, and documenting API usage and rate limits.
 
-4. **Article Structure Definition**: Defining the Pydantic models that will structure the knowledge base articles.
+4. **Quality Metrics Analysis**: Analyzing the quality metrics collected during article creation to identify areas for improvement.
 
-5. **Tool Implementation Planning**: Planning the implementation of custom tools for search, content creation, and validation.
+5. **Additional Tool Implementation**: Planning for the implementation of additional search and validation tools to enhance the system's capabilities.
 
 ## Recent Changes
 
-As this is the initial phase of the project, there are no recent changes to report. The project is currently in the planning and setup stage.
+We have made significant progress in migrating to Google's Gemini models, implementing the end-to-end workflow, metrics collection system, and streamlining the CLI interface:
+
+1. **Migration to Google Gemini Models**:
+   - Refactored the codebase to use Google's Gemini 2.0 Flash models instead of OpenAI models
+   - Created a LLM factory utility to centralize model configuration
+   - Updated configuration files to support Gemini API keys and model settings
+   - Modified all agent creation code to use the new LLM factory
+
+2. **End-to-End Workflow Implementation**:
+   - Implemented a flow that orchestrates the entire knowledge base article creation process
+   - Created a state model for tracking the article creation process
+   - Implemented transitions between research, content creation, review, and quality assessment phases
+   - Added error handling and recovery mechanisms
+
+3. **CLI Enhancement and Streamlining**:
+   - Added a generate command that uses the end-to-end workflow to create a complete knowledge base article
+   - Added a metrics command that generates dashboards for visualizing article quality metrics
+   - Added a visualize_flow command that generates a visualization of the knowledge base article creation flow
+   - Streamlined the CLI interface to use Python's entry point mechanism
+   - Removed the wrapper script in favor of a direct CLI command
+   - Enhanced environment variable handling in the CLI
+   - Updated the installation process to create a proper CLI entry point
+
+4. **Metrics Collection System**:
+   - Implemented a metrics collector for tracking and analyzing the quality of generated articles
+   - Added quality metrics calculation for accuracy, readability, and patient relevance
+   - Implemented risk assessment for identifying potential issues in generated articles
+   - Created a dashboard generation system for visualizing article quality metrics
+
+5. **Quality Assessment System**:
+   - Implemented a quality assessment system that evaluates the accuracy, readability, and patient relevance of generated articles
+   - Added a confidence scoring mechanism based on quality metrics and risk assessment
+   - Implemented a risk area identification system for highlighting potential issues in generated articles
+
+6. **Flow Visualization**:
+   - Added the ability to generate a visualization of the knowledge base article creation flow
+   - Created a plot function that shows the relationships between different steps in the flow
+   - Implemented a command for generating the flow visualization
 
 ## Next Steps
 
 The immediate next steps for the project are:
 
-### Phase 1: Foundation (1-2 weeks)
+### Phase 1: Testing and Refinement (2-3 weeks)
 
-1. **Environment Setup**:
-   - Create the project directory structure
-   - Set up virtual environment using uv
-   - Install core dependencies
+1. **Unit Testing**:
+   - Test individual agents, tools, and components
+   - Validate model constraints
+   - Test error handling
 
-2. **Basic Models Implementation**:
-   - Define Pydantic models for article sections
-   - Implement the main Article model
-   - Create validation logic for article structure
+2. **Integration Testing**:
+   - Test agent interactions
+   - Validate workflow execution
+   - Test storage and retrieval
 
-3. **CLI Interface Development**:
-   - Design the command-line interface
-   - Implement basic commands for article creation
-   - Add help text and documentation
+3. **End-to-End Testing**:
+   - Create complete articles on various topics
+   - Validate output quality and structure
+   - Test CLI functionality
 
-4. **Storage Implementation**:
-   - Create JSON storage functionality
-   - Implement Markdown conversion
-   - Set up the output directory structure
+4. **Performance Optimization**:
+   - Identify and address bottlenecks
+   - Implement caching strategies
+   - Optimize API usage
 
-### Phase 2: Agent Development (2-3 weeks)
+5. **Documentation**:
+   - Update code documentation
+   - Create user guides
+   - Document API usage and rate limits
 
-1. **Research Agents**:
-   - Implement Medical Literature Researcher
-   - Implement Clinical Guidelines Analyst
-   - Implement Medical Data Synthesizer
+### Phase 2: Additional Tool Implementation (1-2 weeks)
 
-2. **Content Creation Agents**:
-   - Implement Medical Content Architect
-   - Implement Medical Content Writer
-   - Implement Medical Citation Specialist
+1. **Additional Search Tools**:
+   - Implement ArXivSearchTool for searching academic papers
+   - Implement SemanticScholarSearchTool for searching scholarly articles
 
-3. **Review Agents**:
-   - Implement Medical Accuracy Reviewer
-   - Implement Medical Content Editor
-   - Implement Patient Perspective Reviewer
+2. **Additional Validation Tools**:
+   - Implement StructureValidatorTool for validating article structure
+   - Implement HallucinationDetectorTool for detecting hallucinations in generated content
 
-### Phase 3: Tool Development (2-3 weeks)
-
-1. **Search Tools**:
-   - Implement SerperDevTool integration
-   - Create PubMedSearchTool
-   - Create ArXivSearchTool
-   - Create SemanticScholarSearchTool
-
-2. **Content Tools**:
-   - Create OutlineGeneratorTool
-   - Create CitationFormatterTool
-   - Create ContentStructureTool
-
-3. **Validation Tools**:
-   - Create FactCheckerTool
-   - Create StructureValidatorTool
-   - Create HallucinationDetectorTool
+3. **Tool Factory**:
+   - Implement a factory pattern for creating tools
+   - Add dynamic tool configuration
+   - Create tool templates for different types of tools
 
 ## Active Decisions and Considerations
 
 ### Architecture Decisions
 
-1. **Agent Granularity**: We've decided to create specialized agents with focused roles rather than more general-purpose agents. This approach aligns with CrewAI best practices and allows for more precise control over the article creation process.
+1. **Flow-Based Architecture**: We've implemented a flow-based architecture for the end-to-end workflow, which provides a structured, event-driven approach to AI workflows. This allows for better state management, error handling, and visualization.
 
-2. **Workflow Design**: We're implementing different workflows for different types of biomedical topics (diseases, biomarkers, lab tests) to accommodate the unique requirements of each article type.
+2. **Metrics Collection Approach**: We're using a metrics collection system that tracks and analyzes the quality of generated articles. This provides valuable insights into the performance of the system and helps identify areas for improvement.
 
-3. **Storage Strategy**: We've chosen to store articles in both JSON and Markdown formats to support both programmatic access and human readability.
+3. **Quality Assessment System**: We've implemented a quality assessment system that evaluates the accuracy, readability, and patient relevance of generated articles. This ensures that the articles meet high standards of quality.
+
+4. **Risk Assessment System**: We've implemented a risk assessment system that identifies potential issues in generated articles and determines a confidence level. This helps users understand the reliability of the generated content.
 
 ### Technical Considerations
 
-1. **API Selection**: We need to evaluate and select the most appropriate APIs for search functionality, considering factors like cost, rate limits, and data quality.
+1. **API Selection**: We're using the SerperDev API for web search and the Entrez API for PubMed search. These APIs provide structured data that can be easily processed by the agents.
 
-2. **LLM Provider**: We need to determine which LLM provider(s) to use, considering factors like performance, cost, and context window size.
+2. **LLM Provider**: We're using Google's Gemini 2.0 Flash model for the agents, as it provides a good balance of performance, quality, and cost with its 1M token context window.
 
-3. **Error Handling**: We need to design robust error handling mechanisms to manage API failures, LLM limitations, and other potential issues.
+3. **Error Handling**: We've implemented error handling in the tools, crews, and flows to manage API failures and other potential issues.
+
+4. **Citation Validation**: We've implemented robust citation validation to ensure that all factual statements are properly attributed to reliable sources.
+
+5. **Performance Optimization**: We're working on optimizing the article creation process to reduce latency and resource usage. This includes implementing caching strategies and optimizing API usage.
 
 ### Open Questions
 
-1. **Search Implementation**: What is the most effective way to implement search across multiple sources while managing rate limits and costs?
+1. **Metrics Refinement**: How can we refine the quality metrics to better reflect the actual quality of the articles?
 
-2. **Quality Assurance**: How can we best validate the accuracy of generated content and detect potential hallucinations?
+2. **Performance Optimization**: What additional strategies can we implement to further optimize the article creation process?
 
-3. **Performance Optimization**: How can we optimize the article creation process to reduce latency and resource usage?
+3. **API Key Management**: What is the best approach for managing API keys securely while allowing for easy configuration?
 
-4. **API Key Management**: What is the best approach for managing API keys securely while allowing for easy configuration?
+4. **Gemini Model Selection**: Should we experiment with other Gemini models like gemini-1.5-pro (2M tokens) for tasks that might benefit from larger context windows or more advanced reasoning?
+
+5. **Prompt Engineering**: Do we need to adjust our prompts to better align with Gemini models' capabilities and response patterns?
+
+4. **Quality Assurance**: How can we further enhance the quality assurance system to ensure the accuracy and reliability of the generated content?
+
+5. **User Experience**: How can we improve the user experience of the CLI to make it more intuitive and user-friendly?
 
 ### Current Priorities
 
-1. **Project Structure**: Establishing a clean, modular project structure that supports extensibility and maintainability.
+1. **Gemini Integration Testing**: Testing the system with Gemini models to ensure compatibility and optimal performance.
 
-2. **Core Models**: Defining the Pydantic models that will structure the knowledge base articles.
+2. **Testing and Refinement**: Implementing comprehensive testing for the system and refining the end-to-end workflow.
 
-3. **Basic Workflow**: Implementing a simple end-to-end workflow to validate the overall approach.
+3. **Performance Optimization**: Optimizing the system for better performance and resource usage.
 
-4. **Documentation**: Creating comprehensive documentation to support ongoing development.
+4. **Documentation**: Updating code documentation, creating user guides, and documenting API usage and rate limits.
+
+4. **Quality Metrics Analysis**: Analyzing the quality metrics collected during article creation to identify areas for improvement.
 
 ## Implementation Status
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Project Setup | In Progress | Basic directory structure created |
-| Memory Bank | In Progress | Core memory bank files being created |
-| Environment Setup | Not Started | Will be implemented next |
-| Pydantic Models | Not Started | Planned for Phase 1 |
-| Agent System | Not Started | Planned for Phase 2 |
-| Tool System | Not Started | Planned for Phase 3 |
-| CLI Interface | Not Started | Planned for Phase 1 |
-| Storage System | Not Started | Planned for Phase 1 |
-| Workflows | Not Started | Planned for Phase 4 |
+| Project Setup | Completed | Basic directory structure created |
+| Memory Bank | Completed | Core memory bank files created |
+| Implementation Plan | Completed | Comprehensive plan developed |
+| Agent System | Completed | Research, content creation, and review agents implemented |
+| Tool System | Completed | Search, content, and validation tools implemented |
+| Workflow System | Completed | Research, content creation, review, and end-to-end workflows implemented |
+| CLI Integration | Completed | Research, create, review, generate, metrics, and visualize_flow commands implemented |
+| Metrics Collection | Completed | Quality metrics tracking and dashboard generation implemented |
+| Testing and Refinement | In Progress | Unit testing in progress |
+| Documentation | In Progress | Code documentation in progress |
 
 ## Recent Insights
 
-As this is the initial phase of the project, we're still gathering insights. Key considerations that have emerged from the planning process include:
+From our implementation of the end-to-end workflow and metrics collection system, we've gained several insights:
 
-1. **Modular Design**: The importance of a modular design that allows for easy extension and modification of the system.
+1. **Flow-Based Architecture**: The value of a flow-based architecture for AI workflows is evident in the end-to-end workflow implementation. It provides a structured, event-driven approach to AI workflows that allows for better state management, error handling, and visualization.
 
-2. **Agent Specialization**: The value of creating specialized agents with clear roles and responsibilities.
+2. **Quality Metrics**: The importance of quality metrics for evaluating the performance of the system is reinforced by our implementation. They provide valuable insights into the quality of the generated articles and help identify areas for improvement.
 
-3. **Workflow Flexibility**: The need for flexible workflows that can adapt to different article types and research requirements.
+3. **Risk Assessment**: The value of risk assessment for identifying potential issues in generated articles is evident in the quality assessment system. It helps users understand the reliability of the generated content.
 
-4. **Quality Control**: The critical importance of robust quality control mechanisms to ensure accuracy and reliability.
+4. **Visualization**: The importance of visualization for understanding complex workflows is reinforced by our implementation of the flow visualization. It helps users understand the relationships between different steps in the workflow.
 
-These insights will guide the implementation of the CrewKB system and inform ongoing development decisions.
+5. **State Management**: The value of proper state management for tracking the article creation process is evident in the flow implementation. It ensures that the system can recover from errors and resume from where it left off.
+
+6. **Event-Driven Architecture**: The benefits of an event-driven architecture for AI workflows are reinforced by our implementation. It allows for better separation of concerns and more flexible workflow design.
+
+7. **Quality Assessment**: The importance of a comprehensive quality assessment system for ensuring the accuracy, readability, and patient relevance of generated articles is evident in our implementation.
+
+8. **Dashboard Generation**: The value of dashboard generation for visualizing article quality metrics is reinforced by our implementation. It provides a clear and intuitive way to understand the performance of the system.
+
+9. **Confidence Scoring**: The importance of confidence scoring for indicating the reliability of generated content is evident in the quality assessment system. It helps users understand the level of trust they can place in the generated articles.
+
+10. **Risk Area Identification**: The value of risk area identification for highlighting potential issues in generated articles is reinforced by our implementation. It helps users understand the specific areas where the article may be less reliable.

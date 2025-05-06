@@ -1,0 +1,75 @@
+description: >
+  Conduct a comprehensive search of the scientific literature on {topic}.
+  
+  Focus on finding:
+  1. Recent peer-reviewed studies (last 5 years if possible)
+  2. Systematic reviews and meta-analyses
+  3. Clinical practice guidelines
+  4. Information from authoritative medical sources
+  
+  For each source, extract:
+  - Key findings relevant to {topic}
+  - Level of evidence
+  - Methodology used
+  - Limitations of the study
+  - Author conclusions
+  
+  Organize the information by subtopic and note any contradictions or 
+  consensus in the literature.
+  
+  Ensure all information is properly cited with:
+  - Author names
+  - Publication title
+  - Journal name
+  - Publication year
+  - DOI or URL when available
+  
+  Prioritize sources based on the hierarchy of evidence:
+  1. Systematic reviews and meta-analyses
+  2. Randomized controlled trials
+  3. Cohort studies
+  4. Case-control studies
+  5. Case series and case reports
+  6. Expert opinion
+  
+  If {topic} is a disease or condition, focus on:
+  - Pathophysiology
+  - Epidemiology
+  - Risk factors
+  - Clinical presentation
+  - Diagnostic criteria
+  - Treatment approaches
+  - Prognosis
+  
+  If {topic} is a biomarker, focus on:
+  - Biological significance
+  - Clinical utility
+  - Reference ranges
+  - Testing methodologies
+  - Correlation with diseases
+  - Sensitivity and specificity
+  
+  If {topic} is a laboratory test, focus on:
+  - Test methodology
+  - Clinical indications
+  - Interpretation of results
+  - Limitations and interferences
+  - Sensitivity and specificity
+  - Cost-effectiveness
+
+expected_output: >
+  A comprehensive summary of the scientific literature on {topic}, organized 
+  by subtopic, with proper citations and an assessment of the quality of evidence.
+  The summary should include:
+  
+  1. An overview of the current state of knowledge on {topic}
+  2. Key findings from high-quality studies
+  3. Areas of consensus among researchers
+  4. Controversies or contradictions in the literature
+  5. Gaps in current knowledge
+  6. A complete bibliography with all sources properly cited
+  
+  The information should be presented in a clear, structured format that can be
+  easily incorporated into a knowledge base article.
+
+agent: medical_literature_researcher

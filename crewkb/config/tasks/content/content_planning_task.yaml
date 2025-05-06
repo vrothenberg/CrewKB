@@ -1,0 +1,72 @@
+description: >
+  Analyze the research synthesis on {topic} and create a comprehensive, well-structured 
+  outline for a {article_type} knowledge base article that organizes the information 
+  in a logical, accessible format tailored for a general audience.
+  
+  Your task involves:
+  
+  1. Analyzing the research synthesis to identify:
+     - Key information that must be included
+     - Logical groupings of information
+     - Priority of information based on importance to the target audience
+     - Areas where there is conflicting information or uncertainty
+     - Gaps that may need additional research
+  
+  2. Creating a detailed outline that:
+     - Follows the article model structure
+     - Adapts to the specific {article_type} (disease, biomarker, or lab test)
+     - Organizes information in a logical flow
+     - Prioritizes practical, actionable information
+     - Includes all required sections
+  
+  3. For disease articles, ensure the outline:
+     - Focuses on practical information for patients and caregivers
+     - Emphasizes symptoms, treatments, and living with the condition
+     - Includes clear "When to See a Doctor" guidance
+     - Highlights prevention strategies where applicable
+  
+  4. For biomarker articles, ensure the outline:
+     - Explains clinical significance in accessible language
+     - Focuses on what test results mean for patients
+     - Includes information on when/why the biomarker is tested
+     - Minimizes technical details unless directly relevant to patients
+  
+  5. For lab test articles, ensure the outline:
+     - Emphasizes practical aspects: preparation, procedure, results interpretation
+     - Includes information on normal ranges and what abnormal results might indicate
+     - Addresses common concerns (pain, fasting requirements, etc.)
+     - Provides context on when/why tests are ordered
+  
+  6. For all article types, ensure the outline:
+     - Structures content with the most important/common information first
+     - Includes sections for addressing common questions
+     - Provides clear organization that helps readers find specific information
+     - Flags areas where there is conflicting information or uncertainty
+  
+  7. Flag any areas where:
+     - Additional research may be needed
+     - There are conflicting findings that need to be addressed
+     - Information is highly technical and needs simplification
+     - Information is speculative or contentious and should be presented with caution
+
+expected_output: >
+  A comprehensive, detailed outline for a {article_type} knowledge base article on {topic} 
+  that follows the article model structure and is tailored to the specific article type.
+  
+  The outline should include:
+  
+  1. A high-level structure showing all major sections
+  2. Detailed subsections with bullet points indicating key content to include
+  3. Notes on areas requiring special attention (conflicting information, gaps, etc.)
+  4. Guidance on content priorities and emphasis
+  5. Suggestions for how to present complex or technical information
+  
+  The outline should be organized in a logical flow that guides readers from basic 
+  information to more specific details, with practical, actionable information prioritized.
+  It should be adapted to the specific article type (disease, biomarker, or lab test) 
+  and should ensure that all key information from the research synthesis is included.
+
+agent: medical_content_architect
+
+context:
+  - data_synthesis_task

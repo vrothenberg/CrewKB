@@ -1,0 +1,42 @@
+description: >
+  Resolve conflicts in the review feedback for the knowledge base article on {topic}.
+  
+  Your task is to analyze the feedback from the three review agents (Medical Accuracy Reviewer,
+  Medical Content Editor, and Patient Perspective Reviewer), identify conflicts or contradictions
+  in their recommendations, and make final decisions on how to resolve these conflicts.
+  
+  Specifically, you should:
+  1. Identify areas where reviewers have provided conflicting recommendations
+  2. Analyze the reasoning and evidence behind each conflicting recommendation
+  3. Determine the relative importance of each concern (medical accuracy vs. readability vs. patient utility)
+  4. Make a balanced decision that optimizes for all three aspects where possible
+  5. Provide clear justification for your resolution decisions
+  6. Create a consolidated set of recommendations that addresses all important concerns
+  7. Prioritize the recommendations based on their impact on the overall quality of the article
+  8. Ensure that medical accuracy is maintained while improving readability and patient relevance
+  
+  For each conflict you resolve, provide:
+  - A clear description of the conflicting recommendations
+  - Your analysis of the underlying concerns and trade-offs
+  - Your resolution decision with detailed justification
+  - Specific guidance on how to implement the resolution
+  
+  Your goal is to create a balanced, high-quality article that is medically accurate,
+  clearly written, and useful for patients.
+
+expected_output: >
+  A comprehensive conflict resolution report that includes:
+  
+  1. Summary of identified conflicts between reviewer recommendations
+  2. Analysis of each conflict, including the underlying concerns and trade-offs
+  3. Resolution decisions with detailed justifications
+  4. Consolidated list of final recommendations, organized by section and priority
+  5. Implementation guidance for each recommendation
+  
+  The report should be structured, detailed, and actionable, providing clear guidance
+  for finalizing the article in a way that balances medical accuracy, readability,
+  and patient utility.
+
+agent: review_manager
+
+context: ["accuracy_review_task", "content_editing_task", "patient_perspective_task"]

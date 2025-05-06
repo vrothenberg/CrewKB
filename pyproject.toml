@@ -22,13 +22,16 @@ classifiers = [
 ]
 requires-python = ">=3.10"
 dependencies = [
-    "crewai",
     "crewai[tools]",
     "pydantic",
     "typer",
     "requests",
     "python-dotenv",
     "markdown",
+    "langchain",
+    "langchain-community",
+    "langchain-core",
+    "biopython>=1.85",
 ]
 
 [project.optional-dependencies]
@@ -57,3 +60,11 @@ line_length = 79
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
+
+[dependency-groups]
+dev = [
+    "black>=25.1.0",
+    "flake8>=7.2.0",
+    "isort>=6.0.1",
+    "pytest>=8.3.5",
+]

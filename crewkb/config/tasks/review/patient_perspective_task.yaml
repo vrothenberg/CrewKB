@@ -1,0 +1,40 @@
+description: >
+  Review the knowledge base article on {topic} from a patient's perspective.
+  
+  Your task is to evaluate the article content from a patient's perspective, ensuring it is
+  practical, relevant, and addresses the concerns and questions that patients typically have.
+  
+  Specifically, you should:
+  1. Assess the practical utility of the information for patients
+  2. Identify any missing information that would be important to patients
+  3. Evaluate the clarity of action items and recommendations
+  4. Check for an empathetic tone and approach
+  5. Ensure the content addresses common patient questions
+  6. Identify areas where additional explanation or context would be helpful
+  7. Assess whether the content acknowledges the emotional and practical challenges patients face
+  8. Evaluate whether the content empowers patients to make informed decisions
+  
+  For each issue you identify, provide:
+  - The specific section and content that needs improvement
+  - A detailed explanation of the issue from a patient's perspective
+  - A recommended addition or improvement
+  - The level of importance (high, medium, low)
+  
+  Your review should focus on making the content more useful, relevant, and supportive for patients
+  who are seeking information about this medical topic.
+
+expected_output: >
+  A comprehensive patient perspective review report that includes:
+  
+  1. Overall assessment of the article's utility and relevance for patients
+  2. Detailed list of identified issues, organized by section
+  3. Specific recommendations for additions or improvements
+  4. Assessment of how well the content addresses common patient questions and concerns
+  5. Suggestions for making the content more empathetic and patient-centered
+  
+  The report should be structured, detailed, and actionable, providing clear guidance
+  for making the article more useful and supportive for patients.
+
+agent: patient_perspective_reviewer
+
+context: ["accuracy_review_task", "content_editing_task"]

@@ -1,0 +1,76 @@
+description: >
+  Compile, organize, and synthesize the research findings on {topic} from the literature 
+  search and guidelines analysis into a coherent, comprehensive, and structured knowledge 
+  base that will serve as the foundation for the article.
+  
+  Your task involves:
+  
+  1. Reviewing all research findings from:
+     - The literature search results
+     - The clinical guidelines analysis
+  
+  2. Organizing the information into a logical structure that aligns with the article model:
+     - Overview section
+     - Key facts section
+     - Symptoms section (if applicable)
+     - Types section (if applicable)
+     - Causes section (if applicable)
+     - Risk factors section (if applicable)
+     - Lifestyle section (if applicable)
+     - Diagnosis section (if applicable)
+     - Prevention section (if applicable)
+     - Specialist to visit section (if applicable)
+     - Treatment section (if applicable)
+     - Home care section (if applicable)
+     - Living with section (if applicable)
+     - Complications section (if applicable)
+     - Alternative therapies section (if applicable)
+     - FAQs section
+     - References section
+  
+  3. For each section:
+     - Identify the most relevant and important information
+     - Synthesize findings from multiple sources
+     - Highlight areas of consensus
+     - Note controversies or contradictions
+     - Identify gaps in knowledge
+  
+  4. Ensure all information maintains proper attribution to sources
+  
+  5. Create a comprehensive reference list that includes all sources cited
+  
+  6. Provide a high-level summary of the current state of knowledge on {topic}
+  
+  7. Identify key themes and patterns across the research
+  
+  8. Note the quality and strength of evidence for major claims
+  
+  9. Distinguish between well-established facts, emerging evidence, and speculative information
+  
+  10. Ensure the synthesis is balanced, comprehensive, and represents the current state of 
+      medical knowledge on {topic}
+
+expected_output: >
+  A comprehensive synthesis of research findings on {topic}, organized according to the 
+  article structure, with proper citations and an assessment of the quality of evidence.
+  
+  The synthesis should include:
+  
+  1. A structured outline that maps to the article model sections
+  2. For each section:
+     - Key information synthesized from multiple sources
+     - Areas of consensus among researchers and guidelines
+     - Controversies or contradictions in the literature and guidelines
+     - Gaps in current knowledge
+     - Quality and strength of evidence assessments
+  3. A complete bibliography with all sources properly cited
+  
+  The synthesis should be comprehensive, balanced, and nuanced, maintaining the complexity 
+  of the original research while making the information accessible and useful. It should 
+  form a solid foundation for the knowledge base article.
+
+agent: medical_data_synthesizer
+
+context:
+  - literature_search_task
+  - guidelines_analysis_task

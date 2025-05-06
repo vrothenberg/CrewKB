@@ -1,0 +1,40 @@
+description: >
+  Review and edit the knowledge base article on {topic} to improve clarity, structure, and readability.
+  
+  Your task is to review the article content and make recommendations for improving its clarity,
+  structure, and readability while maintaining medical accuracy.
+  
+  Specifically, you should:
+  1. Improve sentence structure and flow to enhance readability
+  2. Ensure consistent terminology throughout the article
+  3. Verify that the content is written at an appropriate reading level (8th-10th grade)
+  4. Check for logical organization and progression of information
+  5. Ensure proper formatting and structure
+  6. Identify and simplify overly complex or technical language
+  7. Improve transitions between sections and ideas
+  8. Enhance the overall coherence and cohesiveness of the content
+  
+  For each issue you identify, provide:
+  - The specific section and text that needs improvement
+  - A detailed explanation of the issue
+  - A recommended edit or improvement
+  - The level of importance (major, moderate, minor)
+  
+  Your review should focus on making the content more accessible and understandable to a general
+  audience while preserving the accuracy of the medical information.
+
+expected_output: >
+  A comprehensive content editing report that includes:
+  
+  1. Overall assessment of the article's clarity, structure, and readability
+  2. Detailed list of identified issues, organized by section
+  3. Specific recommendations for edits and improvements
+  4. Assessment of terminology consistency and reading level
+  5. Suggestions for improving organization and flow
+  
+  The report should be structured, detailed, and actionable, providing clear guidance
+  for improving the clarity and readability of the article.
+
+agent: medical_content_editor
+
+context: ["accuracy_review_task"]

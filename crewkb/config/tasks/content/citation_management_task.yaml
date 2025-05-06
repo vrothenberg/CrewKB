@@ -1,0 +1,82 @@
+description: >
+  Review the content of the {article_type} knowledge base article on {topic}, ensure all 
+  factual statements are properly attributed to reliable sources, verify that citations 
+  accurately support the claims made, and create a comprehensive, properly formatted 
+  reference list.
+  
+  Your task involves:
+  
+  1. Reviewing the article content to:
+     - Identify all factual statements that require citation
+     - Check that each factual statement is supported by at least one citation
+     - Verify that the cited sources actually support the specific claims being made
+     - Flag any statements that lack proper attribution or where the citation doesn't 
+       fully support the claim
+  
+  2. Evaluating the quality of sources based on:
+     - Authority (peer-reviewed journals, medical organizations)
+     - Recency of publication
+     - Study design and evidence quality
+     - Consistency with other high-quality sources
+  
+  3. Being particularly careful with statements about:
+     - Treatment efficacy
+     - Risk factors
+     - Prognosis
+     - Other information that might influence healthcare decisions
+  
+  4. Identifying areas where there is conflicting information in the literature and ensuring 
+     that these conflicts are transparently acknowledged rather than presenting one view 
+     as definitive
+  
+  5. Flagging highly speculative or contentious claims that should be either removed or 
+     presented with appropriate caveats
+  
+  6. Creating a comprehensive reference list that:
+     - Includes all sources cited in the article
+     - Follows a standard medical citation style
+     - Is properly formatted and complete
+     - Is organized in a logical manner (e.g., alphabetically by author)
+  
+  7. Ensuring in-text citations are:
+     - Properly formatted
+     - Consistently applied throughout the article
+     - Linked to the correct entries in the reference list
+  
+  8. Providing detailed feedback on:
+     - Statements that need additional citation support
+     - Citations that don't fully support the claims being made
+     - Sources that may not be reliable or authoritative
+     - Areas where there is conflicting information that needs to be addressed
+     - Highly speculative or contentious claims that should be reconsidered
+
+expected_output: >
+  A comprehensive citation review of the {article_type} knowledge base article on {topic}, 
+  including:
+  
+  1. A list of all statements that need additional citation support or where the citation 
+     doesn't fully support the claim
+  
+  2. A list of sources that may not be reliable or authoritative, with recommendations 
+     for alternative sources
+  
+  3. A list of areas where there is conflicting information in the literature, with 
+     recommendations for how to present this information transparently
+  
+  4. A list of highly speculative or contentious claims that should be either removed or 
+     presented with appropriate caveats
+  
+  5. A complete, properly formatted reference list that includes all sources cited in 
+     the article
+  
+  6. Properly formatted in-text citations for all factual statements in the article
+  
+  7. A summary of the overall citation quality of the article, including strengths and 
+     areas for improvement
+
+agent: medical_citation_specialist
+
+context:
+  - data_synthesis_task
+  - content_planning_task
+  - content_writing_task
