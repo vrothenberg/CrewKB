@@ -13,6 +13,7 @@ from dotenv import load_dotenv
 from crewkb.crews import ResearchCrew, ContentCreationCrew, ReviewCrew
 from crewkb.flows import KnowledgeBaseFlow
 from crewkb.utils.metrics_collector import MetricsCollector
+from crewkb.utils.mlflow_utils import initialize_mlflow
 
 # Load environment variables from .env file
 load_dotenv()
@@ -526,6 +527,10 @@ def main():
     """
     Main entry point for the CLI.
     """
+    # Initialize MLflow
+    initialize_mlflow()
+    
+    # Run the CLI app
     app()
 
 

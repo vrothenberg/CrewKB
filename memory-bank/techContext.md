@@ -10,11 +10,13 @@ CrewKB is built using a stack of modern Python technologies, with a focus on AI 
 
 2. **Crew.AI Framework**: The foundation of the agent system, providing tools for creating, managing, and orchestrating AI agents.
 
-3. **Pydantic**: Used for data validation and settings management, particularly for defining the structure of knowledge base articles.
+3. **MLflow**: Used for tracking experiments, logging metrics, and visualizing agent performance and article quality metrics.
 
-4. **uv**: A modern Python package manager and installer, used for dependency management and virtual environment creation.
+4. **Pydantic**: Used for data validation and settings management, particularly for defining the structure of knowledge base articles.
 
-5. **Typer**: A library for building CLI applications, used to create the command-line interface for CrewKB.
+5. **uv**: A modern Python package manager and installer, used for dependency management and virtual environment creation.
+
+6. **Typer**: A library for building CLI applications, used to create the command-line interface for CrewKB.
 
 ### AI and NLP Technologies
 
@@ -114,6 +116,11 @@ The project uses environment variables for configuration, stored in a `.env` fil
 # API Keys
 GEMINI_API_KEY=...
 SERPER_API_KEY=...
+
+# MLflow Configuration
+MLFLOW_TRACKING_URI=http://localhost:5000
+MLFLOW_EXPERIMENT_NAME=CrewKB
+MLFLOW_ENABLED=True
 
 # LLM Configuration
 DEFAULT_LLM_MODEL=gemini/gemini-2.0-flash-exp

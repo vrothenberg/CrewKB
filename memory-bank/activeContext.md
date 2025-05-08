@@ -16,7 +16,7 @@ The current focus of the CrewKB project is on migrating to Google's Gemini model
 
 ## Recent Changes
 
-We have made significant progress in migrating to Google's Gemini models, implementing the end-to-end workflow, metrics collection system, streamlining the CLI interface, and developing a comprehensive testing framework:
+We have made significant progress in migrating to Google's Gemini models, implementing the end-to-end workflow, metrics collection system, MLflow integration, streamlining the CLI interface, and developing a comprehensive testing framework:
 
 1. **Migration to Google Gemini Models**:
    - Refactored the codebase to use Google's Gemini 2.0 Flash models instead of OpenAI models
@@ -76,7 +76,16 @@ We have made significant progress in migrating to Google's Gemini models, implem
    - Updated ToolFactory to create and assign the SemanticScholarTool to appropriate agents
    - Integrated the SemanticScholarTool with the research and citation workflows
 
-10. **DirectGoogleScholarTool and Test Suite Fixes**:
+10. **MLflow Integration**:
+    - Integrated MLflow for tracking experiments, logging metrics, and visualizing agent performance
+    - Created a MLflow utility module to centralize MLflow integration
+    - Updated configuration files to support MLflow tracking URI and experiment name
+    - Modified the knowledge base flow to log metrics to MLflow
+    - Enhanced the metrics collector to integrate with MLflow
+    - Created a test script for verifying MLflow integration
+    - Updated memory bank files to document MLflow integration
+
+11. **DirectGoogleScholarTool and Test Suite Fixes**:
     - Resolved `TypeError` in `DirectGoogleScholarTool` related to invalid arguments (`stealth`, `magic`, `simulate_user`) for `BrowserConfig` from `crawl4ai`.
     - Corrected `TypeError` for `CrawlerRunConfig` by changing `timeout` to `page_timeout`.
     - Fixed `RuntimeWarning: coroutine '_async_run' was never awaited` in `test_direct_google_scholar_tool.py` by ensuring the coroutine object passed to the mocked `asyncio.run` is closed.

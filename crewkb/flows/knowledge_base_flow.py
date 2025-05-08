@@ -12,7 +12,9 @@ from typing import Dict, Any, Optional, List
 from pathlib import Path
 from pydantic import BaseModel, Field
 
+import mlflow
 from crewai.flow.flow import Flow, listen, start
+from crewkb.utils.mlflow_utils import start_run, log_article_metrics, log_workflow_metrics
 
 from crewkb.crews.research_crew import ResearchCrew
 from crewkb.crews.content_creation_crew import ContentCreationCrew
@@ -305,8 +307,18 @@ class KnowledgeBaseFlow(Flow[ArticleState]):
             }
         }
         
-        # Add metrics
+        # Add metrics to local storage
         metrics_collector.add_article_metrics(metrics_data)
+        
+        # Log metrics to MLflow
+        with start_run(run_name=f"article_{self.state.topic}"):
+            log_article_metrics(metrics_data)
+            
+            # Log workflow metrics
+            workflow_metrics = {
+                "workflow_completion_time": datetime.datetime.now().isoformat()
+            }
+            log_workflow_metrics("knowledge_base_flow", workflow_metrics)
         
         print(f"Article metrics saved to {metrics_dir}")
 
@@ -519,16 +531,31 @@ class KnowledgeBaseFlow(Flow[ArticleState]):
 
 def kickoff():
     """Run the knowledge base flow."""
-    flow = KnowledgeBaseFlow()
-    result = flow.kickoff()
-    
-    print("\n=== Knowledge Base Article Creation Complete ===")
-    print(f"Topic: {result['topic']}")
-    print(f"Article Type: {result['article_type']}")
-    print(f"Quality Score: {result['quality_score']:.2f}")
-    print(f"Confidence Level: {result['confidence_level']}")
-    print(f"JSON Output: {result['json_path']}")
-    print(f"Markdown Output: {result['markdown_path']}")
+    # Start MLflow run
+    with start_run(run_name="knowledge_base_flow"):
+        flow = KnowledgeBaseFlow()
+        result = flow.kickoff()
+        
+        # Log metrics to MLflow
+        metrics_data = {
+            "topic": result["topic"],
+            "article_type": result["article_type"],
+            "quality_metrics": {
+                "quality_score": result["quality_score"],
+            },
+            "risk_assessment": {
+                "confidence_level": result["confidence_level"]
+            }
+        }
+        log_article_metrics(metrics_data)
+        
+        print("\n=== Knowledge Base Article Creation Complete ===")
+        print(f"Topic: {result['topic']}")
+        print(f"Article Type: {result['article_type']}")
+        print(f"Quality Score: {result['quality_score']:.2f}")
+        print(f"Confidence Level: {result['confidence_level']}")
+        print(f"JSON Output: {result['json_path']}")
+        print(f"Markdown Output: {result['markdown_path']}")
 
 
 def plot():

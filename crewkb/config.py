@@ -28,6 +28,11 @@ SERPER_API_KEY = os.getenv("SERPER_API_KEY")
 PUBMED_API_KEY = os.getenv("PUBMED_API_KEY")
 SEMANTIC_SCHOLAR_API_KEY = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
 
+# MLflow configuration
+MLFLOW_TRACKING_URI = os.getenv("MLFLOW_TRACKING_URI", "http://localhost:5000")
+MLFLOW_EXPERIMENT_NAME = os.getenv("MLFLOW_EXPERIMENT_NAME", "CrewKB")
+MLFLOW_ENABLED = os.getenv("MLFLOW_ENABLED", "True").lower() == "true"
+
 # LLM configuration
 DEFAULT_LLM_MODEL = os.getenv(
     "DEFAULT_LLM_MODEL", "gemini/gemini-2.0-flash-exp"

@@ -11,6 +11,8 @@ import datetime
 from typing import Dict, Any, List, Optional
 from pathlib import Path
 
+from crewkb.utils.mlflow_utils import log_article_metrics
+
 
 class MetricsCollector:
     """
@@ -57,6 +59,9 @@ class MetricsCollector:
         # Save updated metrics
         with open(self.metrics_file, "w") as f:
             json.dump(all_metrics, f, indent=2)
+        
+        # Log metrics to MLflow
+        log_article_metrics(metrics)
     
     def get_all_metrics(self) -> List[Dict[str, Any]]:
         """

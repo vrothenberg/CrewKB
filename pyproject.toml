@@ -32,6 +32,7 @@ dependencies = [
     "langchain-community",
     "langchain-core",
     "biopython>=1.85",
+    "mlflow>=2.22.0",
 ]
 
 [project.optional-dependencies]

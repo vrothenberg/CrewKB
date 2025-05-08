@@ -49,6 +49,7 @@ flowchart TD
 - **Quality Assurance**: Review agents ensure accuracy and detect potential hallucinations.
 - **CLI Interface**: Simple command-line interface for creating and managing articles.
 - **Google Gemini Models**: Uses Google's Gemini 2.0 Flash models for high-quality, efficient content generation.
+- **MLflow Integration**: Tracks experiments, logs metrics, and visualizes agent performance.
 
 ## Installation
 
@@ -146,6 +147,11 @@ SERPER_API_KEY=your_serper_api_key
 ENTREZ_EMAIL=your_email@example.com
 ENTREZ_API_KEY=your_entrez_api_key
 
+# MLflow Configuration
+MLFLOW_TRACKING_URI=http://localhost:5000
+MLFLOW_EXPERIMENT_NAME=CrewKB
+MLFLOW_ENABLED=True
+
 # LLM Configuration
 DEFAULT_LLM_MODEL=gemini/gemini-2.0-flash-exp
 DEFAULT_LLM_TEMPERATURE=0.7
@@ -183,6 +189,27 @@ crewkb list
 crewkb export "Diabetes Mellitus" --format markdown --output diabetes.md
 ```
 
+### Using MLflow for Experiment Tracking
+
+CrewKB integrates with MLflow for tracking experiments, logging metrics, and visualizing agent performance. To use MLflow:
+
+1. Start the MLflow server:
+   ```bash
+   mlflow server
+   ```
+
+2. Run the test script to verify the MLflow integration:
+   ```bash
+   ./test_mlflow_integration.py
+   ```
+
+3. View the MLflow UI in your browser:
+   ```
+   http://localhost:5000
+   ```
+
+For more information, see the [MLflow Integration Documentation](docs/mlflow_integration.md).
+
 ## Project Structure
 
 ```
@@ -191,6 +218,8 @@ CrewKB/
 ├── .env                   # Environment variables
 ├── pyproject.toml         # Project configuration
 ├── README.md              # Project documentation
+├── docs/                  # Documentation
+│   └── mlflow_integration.md  # MLflow integration documentation
 ├── crewkb/
 │   ├── __init__.py
 │   ├── cli.py             # CLI interface
@@ -210,6 +239,7 @@ CrewKB/
 │   │   └── validation/    # Validation tools
 │   ├── storage/           # Storage implementations
 │   └── utils/             # Utility functions
+│       └── mlflow_utils.py  # MLflow utilities
 └── tests/                 # Test directory
 ```
 
