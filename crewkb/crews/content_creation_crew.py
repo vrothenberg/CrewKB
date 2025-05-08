@@ -12,6 +12,7 @@ import os
 from pathlib import Path
 
 from crewkb.utils.llm_factory import create_llm
+from crewkb.utils.tool_factory import ToolFactory
 
 
 class ContentCreationCrew:
@@ -81,10 +82,16 @@ class ContentCreationCrew:
                 
                 # Create agent
                 agent_name = Path(filename).stem
+                
+                # Get tools for this agent using the ToolFactory
+                tools = ToolFactory.create_tools_for_agent(agent_name)
+                
+                # Create agent with tools
                 agent = Agent(
                     role=config.get("role", ""),
                     goal=self._format_string(config.get("goal", "")),
                     backstory=config.get("backstory", ""),
+                    tools=tools,
                     llm=create_llm(),
                     verbose=True
                 )

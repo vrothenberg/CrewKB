@@ -40,9 +40,11 @@ venv.bak/
 output/
 knowledge/
 logs/
+data/
 
 # Jupyter Notebook
 .ipynb_checkpoints
+notebooks/
 
 # Coverage
 htmlcov/

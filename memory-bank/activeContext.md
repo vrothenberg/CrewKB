@@ -16,7 +16,7 @@ The current focus of the CrewKB project is on migrating to Google's Gemini model
 
 ## Recent Changes
 
-We have made significant progress in migrating to Google's Gemini models, implementing the end-to-end workflow, metrics collection system, and streamlining the CLI interface:
+We have made significant progress in migrating to Google's Gemini models, implementing the end-to-end workflow, metrics collection system, streamlining the CLI interface, and developing a comprehensive testing framework:
 
 1. **Migration to Google Gemini Models**:
    - Refactored the codebase to use Google's Gemini 2.0 Flash models instead of OpenAI models
@@ -55,6 +55,36 @@ We have made significant progress in migrating to Google's Gemini models, implem
    - Created a plot function that shows the relationships between different steps in the flow
    - Implemented a command for generating the flow visualization
 
+7. **Tool Factory Implementation**:
+   - Created a ToolFactory utility to centralize tool creation and management
+   - Implemented methods for creating tools by name and for specific agents
+   - Updated crew implementations to use the ToolFactory for tool assignment
+   - Ensured proper tool assignment to review agents for validation tools
+
+8. **Testing Framework Development**:
+   - Established a comprehensive testing structure for all components
+   - Created unit tests for validation tools (FactCheckerTool, ReadabilityAnalyzerTool)
+   - Implemented tests for the ToolFactory utility
+   - Created documentation for the testing framework and guidelines
+   - Fixed compatibility issues with Pydantic models in validation tools
+   - Updated tests to handle changes in tool description formatting
+   - Ensured all tests pass successfully with the run_tests.sh script
+
+9. **Additional Search Tools Implementation**:
+   - Implemented SemanticScholarTool for searching academic papers with citation count and quality filtering
+   - Added unit tests for the SemanticScholarTool
+   - Updated ToolFactory to create and assign the SemanticScholarTool to appropriate agents
+   - Integrated the SemanticScholarTool with the research and citation workflows
+
+10. **DirectGoogleScholarTool and Test Suite Fixes**:
+    - Resolved `TypeError` in `DirectGoogleScholarTool` related to invalid arguments (`stealth`, `magic`, `simulate_user`) for `BrowserConfig` from `crawl4ai`.
+    - Corrected `TypeError` for `CrawlerRunConfig` by changing `timeout` to `page_timeout`.
+    - Fixed `RuntimeWarning: coroutine '_async_run' was never awaited` in `test_direct_google_scholar_tool.py` by ensuring the coroutine object passed to the mocked `asyncio.run` is closed.
+    - Implemented basic stealth enhancements in `DirectGoogleScholarTool`:
+        - Set `user_agent_mode="random"` in `BrowserConfig`.
+        - Passed `magic=True` to the `crawler.arun()` call.
+    - Updated `.clinerules` to reflect user preference of not auto-fixing Flake8 errors.
+
 ## Next Steps
 
 The immediate next steps for the project are:
@@ -90,7 +120,6 @@ The immediate next steps for the project are:
 
 1. **Additional Search Tools**:
    - Implement ArXivSearchTool for searching academic papers
-   - Implement SemanticScholarSearchTool for searching scholarly articles
 
 2. **Additional Validation Tools**:
    - Implement StructureValidatorTool for validating article structure
@@ -115,7 +144,7 @@ The immediate next steps for the project are:
 
 ### Technical Considerations
 
-1. **API Selection**: We're using the SerperDev API for web search and the Entrez API for PubMed search. These APIs provide structured data that can be easily processed by the agents.
+1. **API Selection**: We're using the SerperDev API for web search, the Entrez API for PubMed search, and the Semantic Scholar API for academic paper search. These APIs provide structured data that can be easily processed by the agents.
 
 2. **LLM Provider**: We're using Google's Gemini 2.0 Flash model for the agents, as it provides a good balance of performance, quality, and cost with its 1M token context window.
 
@@ -131,7 +160,7 @@ The immediate next steps for the project are:
 
 2. **Performance Optimization**: What additional strategies can we implement to further optimize the article creation process?
 
-3. **API Key Management**: What is the best approach for managing API keys securely while allowing for easy configuration?
+3. **API Key Management**: What is the best approach for managing API keys (Gemini, SerperDev, PubMed, Semantic Scholar) securely while allowing for easy configuration?
 
 4. **Gemini Model Selection**: Should we experiment with other Gemini models like gemini-1.5-pro (2M tokens) for tasks that might benefit from larger context windows or more advanced reasoning?
 
@@ -165,8 +194,8 @@ The immediate next steps for the project are:
 | Workflow System | Completed | Research, content creation, review, and end-to-end workflows implemented |
 | CLI Integration | Completed | Research, create, review, generate, metrics, and visualize_flow commands implemented |
 | Metrics Collection | Completed | Quality metrics tracking and dashboard generation implemented |
-| Testing and Refinement | In Progress | Unit testing in progress |
-| Documentation | In Progress | Code documentation in progress |
+| Testing and Refinement | In Progress | Unit testing framework established, validation tools tested, DirectGoogleScholarTool tests fixed |
+| Documentation | In Progress | Code documentation in progress, test documentation added |
 
 ## Recent Insights
 
@@ -191,3 +220,7 @@ From our implementation of the end-to-end workflow and metrics collection system
 9. **Confidence Scoring**: The importance of confidence scoring for indicating the reliability of generated content is evident in the quality assessment system. It helps users understand the level of trust they can place in the generated articles.
 
 10. **Risk Area Identification**: The value of risk area identification for highlighting potential issues in generated articles is reinforced by our implementation. It helps users understand the specific areas where the article may be less reliable.
+
+11. **Pydantic Compatibility**: The importance of properly annotating class variables in Pydantic models is evident from our testing framework development. Using ClassVar annotations for class-level variables that are not meant to be model fields is essential for compatibility with newer versions of Pydantic.
+
+12. **Quality Filtering**: The value of quality filtering in search tools is evident from our implementation of the SemanticScholarTool. Filtering papers by citation count and other quality metrics helps ensure that the agents have access to high-quality, reliable sources for their research and fact-checking.

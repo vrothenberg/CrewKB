@@ -40,6 +40,8 @@ This file captures important patterns, preferences, and project intelligence for
 
 5. **Article Structure**: The user has defined a specific structure for knowledge base articles using Pydantic models with various sections.
 
+6. **Flake8 Errors**: The user prefers to handle Flake8 linting errors themselves or to ignore them if they do not impact functionality. I should not spend time fixing them unless explicitly asked.
+
 ## Critical Implementation Paths
 
 1. **Article Structure Definition**: The Pydantic models defining the article structure are a critical foundation for the entire system.

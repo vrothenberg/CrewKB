@@ -11,8 +11,8 @@ import yaml
 import os
 from pathlib import Path
 
-from crewkb.tools.search import SerperDevTool, PubMedSearchTool
 from crewkb.utils.llm_factory import create_llm
+from crewkb.utils.tool_factory import ToolFactory
 
 
 class ResearchCrew:
@@ -83,12 +83,8 @@ class ResearchCrew:
                 # Create agent
                 agent_name = Path(filename).stem
                 
-                # Determine tools based on agent name
-                tools = []
-                if agent_name == "medical_literature_researcher":
-                    tools = [SerperDevTool(), PubMedSearchTool()]
-                elif agent_name == "clinical_guidelines_analyst":
-                    tools = [SerperDevTool()]
+                # Get tools for this agent using the ToolFactory
+                tools = ToolFactory.create_tools_for_agent(agent_name)
                 
                 # Create agent
                 agent = Agent(

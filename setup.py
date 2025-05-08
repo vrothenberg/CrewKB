@@ -34,6 +34,8 @@ INSTALL_REQUIRES = [
     "langchain-community",
     "langchain-core",
     "biopython",  # Added for PubMed search
+    "crawl4ai",   # Added for web scraping
+    "beautifulsoup4",  # Added for HTML parsing
 ]
 
 EXTRAS_REQUIRE = {
