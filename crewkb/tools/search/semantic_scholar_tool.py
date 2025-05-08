@@ -10,6 +10,8 @@ import json
 import time
 import random
 import logging
+import asyncio
+import aiohttp
 import requests
 import pandas as pd
 from typing import Dict, Any, List, Optional
@@ -58,11 +60,16 @@ class SemanticScholarTool(BaseTool):
         self._last_request_time = 0
         self._min_delay = 1.0  # Minimum time (in seconds) between requests
         self._max_retries = 5
+        self._auth_failed = False  # Track if authentication has failed
         
         # Load SJR data if available
-        journals_path = os.getenv("JOURNALS_CSV_PATH")
-        if journals_path and os.path.exists(journals_path):
+        journals_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(__file__)))), 
+                                    "data", "journals_df.csv")
+        if os.path.exists(journals_path):
             self.load_journal_sjr_data(journals_path)
+            logging.info(f"Loaded journal SJR data from {journals_path}")
+        else:
+            logging.warning(f"Journal SJR data file not found at {journals_path}")
     
     def load_journal_sjr_data(self, csv_path: str) -> None:
         """
@@ -101,7 +108,36 @@ class SemanticScholarTool(BaseTool):
         sort_by: str = "relevance"
     ) -> str:
         """
-        Run the Semantic Scholar search.
+        Run the Semantic Scholar search synchronously by calling the async method.
+        
+        Args:
+            query: The search query to perform.
+            max_results: The maximum number of results to return.
+            min_citation_count: The minimum citation count for papers to include.
+            sjr_threshold: The minimum SJR score for journals to include.
+            sort_by: How to sort results (relevance, citation_count).
+            
+        Returns:
+            A string containing the search results.
+        """
+        return asyncio.run(self._async_run(
+            query=query,
+            max_results=max_results,
+            min_citation_count=min_citation_count,
+            sjr_threshold=sjr_threshold,
+            sort_by=sort_by
+        ))
+    
+    async def _async_run(
+        self,
+        query: str,
+        max_results: int = 10,
+        min_citation_count: int = 50,
+        sjr_threshold: float = 1.0,
+        sort_by: str = "relevance"
+    ) -> str:
+        """
+        Run the Semantic Scholar search asynchronously.
         
         Args:
             query: The search query to perform.
@@ -116,23 +152,40 @@ class SemanticScholarTool(BaseTool):
         Raises:
             Exception: If the API request fails.
         """
-        api_key = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
-        if not api_key:
-            return "Error: SEMANTIC_SCHOLAR_API_KEY environment variable not set"
-        
         try:
+            logging.info(f"Starting search for query: {query}")
+            
             # Step 1: Search for papers
-            search_results = self._search_papers(query, api_key, max_results)
+            logging.info("Step 1: Searching for papers")
+            search_results = await self._search_papers(query, max_results * 2)
+            
+            if search_results is None:
+                logging.error("Search results is None")
+                return f"API request failed for query: {query}. This may be due to rate limiting."
+            
+            logging.info(f"Search results type: {type(search_results)}")
+            
             if not search_results or "data" not in search_results:
+                logging.warning(f"No data in search results: {search_results}")
                 return f"No results found for query: {query}"
+            
+            logging.info(f"Found {len(search_results.get('data', []))} papers in search results")
             
             paper_ids = [paper.get("paperId") for paper in search_results.get("data", [])]
             if not paper_ids:
+                logging.warning("No paper IDs found")
                 return f"No paper IDs found for query: {query}"
             
+            logging.info(f"Extracted {len(paper_ids)} paper IDs")
+            
             # Step 2: Get detailed paper information
-            papers = self._get_paper_details(paper_ids, api_key, query)
+            logging.info("Step 2: Getting detailed paper information")
+            papers = await self._get_paper_details(paper_ids, query)
+            
+            logging.info(f"Got details for {len(papers) if papers else 0} papers")
+            
             if not papers:
+                logging.warning("No detailed paper information found")
                 return f"No detailed paper information found for query: {query}"
             
             # Step 3: Filter papers by citation count and journal quality
@@ -154,13 +207,12 @@ class SemanticScholarTool(BaseTool):
         except Exception as e:
             return f"Error performing Semantic Scholar search: {str(e)}"
     
-    def _search_papers(self, query: str, api_key: str, limit: int) -> Dict[str, Any]:
+    async def _search_papers(self, query: str, limit: int) -> Dict[str, Any]:
         """
-        Search for papers using the Semantic Scholar API.
+        Search for papers using the Semantic Scholar API with authentication fallback.
         
         Args:
             query: The search query.
-            api_key: The Semantic Scholar API key.
             limit: The maximum number of results to return.
             
         Returns:
@@ -169,29 +221,43 @@ class SemanticScholarTool(BaseTool):
         url = "https://api.semanticscholar.org/graph/v1/paper/search"
         params = {
             "query": query,
-            "limit": min(limit * 2, 100),  # Get more results than needed for filtering
+            "limit": min(limit, 100),  # API limit is 100
             "fields": "paperId"
         }
-        headers = {"x-api-key": api_key}
         
-        return self._request_with_backoff("GET", url, headers=headers, params=params)
+        # Try with API key if authentication hasn't failed before
+        if not self._auth_failed:
+            api_key = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
+            if api_key:
+                headers = {"x-api-key": api_key}
+                result = await self._async_request_with_backoff("GET", url, headers=headers, params=params)
+                
+                # If successful, return the result
+                if result is not None:
+                    return result
+                
+                # If we get here, authentication failed
+                logging.warning("Authentication with API key failed, falling back to unauthenticated requests")
+                self._auth_failed = True
+        
+        # Fallback to unauthenticated request
+        return await self._async_request_with_backoff("GET", url, headers={}, params=params)
     
-    def _get_paper_details(
-        self, paper_ids: List[str], api_key: str, query: str
-    ) -> List[Dict[str, Any]]:
+    async def _get_paper_details(self, paper_ids: List[str], query: str) -> List[Dict[str, Any]]:
         """
         Get detailed information for papers using the Semantic Scholar batch API.
         
         Args:
             paper_ids: List of paper IDs.
-            api_key: The Semantic Scholar API key.
             query: The original search query.
             
         Returns:
             List of paper details.
         """
+        if not paper_ids:
+            return []
+            
         url = "https://api.semanticscholar.org/graph/v1/paper/batch"
-        headers = {"x-api-key": api_key}
         fields = (
             "title,abstract,authors,citationCount,referenceCount,"
             "url,venue,publicationVenue,year,openAccessPdf,externalIds"
@@ -204,7 +270,14 @@ class SemanticScholarTool(BaseTool):
             batch_ids = paper_ids[i:i+20]
             payload = {"ids": batch_ids}
             
-            response_data = self._request_with_backoff(
+            # Try with API key if authentication hasn't failed before
+            headers = {}
+            if not self._auth_failed:
+                api_key = os.getenv("SEMANTIC_SCHOLAR_API_KEY")
+                if api_key:
+                    headers = {"x-api-key": api_key}
+            
+            response_data = await self._async_request_with_backoff(
                 "POST", url, headers=headers, params=params, json=payload
             )
             
@@ -216,9 +289,62 @@ class SemanticScholarTool(BaseTool):
                 all_papers.extend([p for p in response_data if p])
             
             # Sleep between batches to respect rate limits
-            time.sleep(1)
+            await asyncio.sleep(1)
         
         return all_papers
+    
+    async def _async_request_with_backoff(self, method: str, url: str, **kwargs) -> Any:
+        """
+        Perform an HTTP request asynchronously with exponential backoff.
+        
+        Args:
+            method: The HTTP method (GET, POST, etc.).
+            url: The URL for the request.
+            **kwargs: Additional parameters for the request.
+            
+        Returns:
+            The JSON response data or None if the request ultimately fails.
+        """
+        async with aiohttp.ClientSession() as session:
+            for attempt in range(self._max_retries):
+                try:
+                    # Enforce rate limiting
+                    now = time.time()
+                    elapsed = now - self._last_request_time
+                    if elapsed < self._min_delay:
+                        await asyncio.sleep(self._min_delay - elapsed)
+                    self._last_request_time = time.time()
+                    
+                    # Perform the request
+                    request_method = getattr(session, method.lower())
+                    async with request_method(url, **kwargs) as response:
+                        if response.status == 200:
+                            return await response.json()
+                        elif response.status == 403:  # Forbidden - API key invalid
+                            logging.error("API key invalid or unauthorized")
+                            if "x-api-key" in kwargs.get("headers", {}):
+                                # Mark authentication as failed for future requests
+                                self._auth_failed = True
+                                # If this was an authenticated request, return None to trigger fallback
+                                return None
+                        elif response.status == 429:  # Too Many Requests
+                            logging.warning("Rate limit hit, backing off")
+                        else:
+                            logging.warning(f"Request failed with status {response.status}")
+                
+                except (aiohttp.ClientError, asyncio.TimeoutError) as e:
+                    logging.warning(f"Request error: {e}")
+                    
+                # Exponential backoff with jitter
+                delay = (2 ** attempt) + random.uniform(0, 1)
+                logging.warning(
+                    f"Retrying in {delay:.2f} seconds... "
+                    f"(Attempt {attempt + 1}/{self._max_retries})"
+                )
+                await asyncio.sleep(delay)
+            
+            logging.error(f"Max retries reached for {url}. Giving up.")
+            return None
     
     def _filter_papers(
         self, papers: List[Dict[str, Any]], min_citation_count: int, sjr_threshold: float
@@ -234,6 +360,10 @@ class SemanticScholarTool(BaseTool):
         Returns:
             Filtered list of papers.
         """
+        if not papers:
+            logging.warning("No papers to filter")
+            return []
+            
         filtered_papers = []
         
         for paper in papers:
@@ -243,14 +373,14 @@ class SemanticScholarTool(BaseTool):
             
             # Check citation count
             citation_count = paper.get("citationCount", 0)
-            if citation_count < min_citation_count:
+            if min_citation_count is not None and citation_count < min_citation_count:
                 continue
             
             # Check journal quality if SJR data is available
             pub_venue = paper.get("publicationVenue", {})
             if pub_venue and self._sjr_map:
                 issn = pub_venue.get("issn", "")
-                issn_clean = issn.replace("-", "").strip()
+                issn_clean = issn.replace("-", "").strip() if issn else ""
                 
                 if issn_clean in self._sjr_map:
                     sjr_info = self._sjr_map[issn_clean]
@@ -284,6 +414,12 @@ class SemanticScholarTool(BaseTool):
         Returns:
             Sorted list of papers.
         """
+        if not papers:
+            logging.warning("No papers to sort")
+            return []
+            
+        logging.info(f"Sorting {len(papers)} papers by {sort_by}")
+        
         if sort_by == "citation_count":
             return sorted(
                 papers, key=lambda p: p.get("citationCount", 0), reverse=True
@@ -305,6 +441,12 @@ class SemanticScholarTool(BaseTool):
         Returns:
             Formatted string with results.
         """
+        if papers is None:
+            logging.warning("Papers is None in _format_results")
+            papers = []
+            
+        logging.info(f"Formatting {len(papers)} papers for query: {query}")
+            
         formatted = f"Semantic Scholar Results for '{query}':\n\n"
         
         if not papers:
@@ -332,7 +474,7 @@ class SemanticScholarTool(BaseTool):
             doi = paper.get("externalIds", {}).get("DOI", "")
             
             abstract = paper.get("abstract", "No abstract available.")
-            if len(abstract) > 300:
+            if abstract and len(abstract) > 300:
                 abstract = abstract[:300] + "..."
             
             formatted += f"{i}. {title}\n"
@@ -391,53 +533,3 @@ class SemanticScholarTool(BaseTool):
             citation += f" Available at: {url}."
         
         return citation
-    
-    def _request_with_backoff(
-        self, method: str, url: str, **kwargs
-    ) -> Any:
-        """
-        Perform an HTTP request with exponential backoff.
-        
-        Args:
-            method: The HTTP method (GET, POST, etc.).
-            url: The URL for the request.
-            **kwargs: Additional parameters for the request.
-            
-        Returns:
-            The JSON response data or None if the request ultimately fails.
-        """
-        for attempt in range(self._max_retries):
-            try:
-                # Enforce rate limiting
-                now = time.time()
-                elapsed = now - self._last_request_time
-                if elapsed < self._min_delay:
-                    time.sleep(self._min_delay - elapsed)
-                self._last_request_time = time.time()
-                
-                # Perform the request
-                response = requests.request(method, url, **kwargs)
-                response.raise_for_status()
-                return response.json()
-            
-            except requests.RequestException as e:
-                logging.warning(f"Request error: {e}")
-                
-                # Check for rate limiting response
-                if hasattr(e, "response") and e.response is not None:
-                    if e.response.status_code == 429:  # Too Many Requests
-                        logging.warning("Rate limit hit, backing off")
-                    elif e.response.status_code == 403:  # Forbidden
-                        logging.error("API key invalid or unauthorized")
-                        break
-                
-                # Exponential backoff with jitter
-                delay = (2 ** attempt) + random.uniform(0, 1)
-                logging.warning(
-                    f"Retrying in {delay:.2f} seconds... "
-                    f"(Attempt {attempt + 1}/{self._max_retries})"
-                )
-                time.sleep(delay)
-        
-        logging.error(f"Max retries reached for {url}. Giving up.")
-        return None

@@ -14,6 +14,7 @@ from crewkb.tools.search.direct_google_scholar_tool import DirectGoogleScholarTo
 from crewkb.tools.search.webpage_scraper_tool import WebpageScraperTool
 from crewkb.tools.search.semantic_scholar_tool import SemanticScholarTool
 from crewkb.tools.search.crawl4ai_scraper_tool import Crawl4AIScraperTool
+from crewkb.tools.search.pdf_processor_tool import PDFProcessorTool
 from crewkb.tools.content.outline_generator_tool import OutlineGeneratorTool
 from crewkb.tools.content.content_structure_tool import ContentStructureTool
 from crewkb.tools.content.citation_formatter_tool import CitationFormatterTool
@@ -57,6 +58,8 @@ class ToolFactory:
             return SemanticScholarTool()
         elif tool_name == "crawl4ai_scraper":
             return Crawl4AIScraperTool()
+        elif tool_name == "pdf_processor":
+            return PDFProcessorTool()
         
         # Content tools
         elif tool_name == "outline_generator":
@@ -91,7 +94,8 @@ class ToolFactory:
                 PubMedSearchTool(), 
                 SemanticScholarTool(),
                 WebpageScraperTool(),
-                Crawl4AIScraperTool()
+                Crawl4AIScraperTool(),
+                PDFProcessorTool()  # Added for PDF processing
             ]
         elif agent_name == "clinical_guidelines_analyst":
             tools = [

@@ -2,21 +2,33 @@
 
 ## Current Work Focus
 
-The current focus of the CrewKB project is on migrating to Google's Gemini models and testing the end-to-end workflow for knowledge base article creation using Crew.AI. This includes:
+The current focus of the CrewKB project is on enhancing the search and knowledge synthesis workflow for knowledge base article creation. This includes:
 
-1. **Testing and Refinement**: Testing the end-to-end workflow that combines research, content creation, review, and quality assessment to ensure it works reliably and produces high-quality articles.
+1. **Enhanced Search Workflow**: Implementing a comprehensive search workflow that leverages Google Scholar and Semantic Scholar to gather high-quality research papers, with a focus on:
+   - Generating search terms from article outlines using Gemini 2.5 Pro
+   - Searching with DirectGoogleScholarTool and SemanticScholarTool
+   - Analyzing related search terms to expand research coverage
+   - Downloading and parsing PDFs using the Marker package
+   - Distilling content with Gemini 2.0 Flash
 
-2. **Performance Optimization**: Identifying and addressing bottlenecks in the article creation process to reduce latency and resource usage.
+2. **Knowledge Organization**: Creating a structured knowledge directory system to organize research materials by topic, including:
+   - Implementing Pydantic models for paper metadata
+   - Creating a hierarchical storage structure for research materials
+   - Developing utilities for managing the knowledge directory
 
-3. **Documentation**: Updating code documentation, creating user guides, and documenting API usage and rate limits.
+3. **Agent-Based Synthesis**: Developing specialized agents for different stages of the knowledge synthesis process:
+   - Outline generation with Gemini 2.5 Pro
+   - Search term generation and analysis
+   - Content distillation and synthesis
+   - Quality review and improvement
 
-4. **Quality Metrics Analysis**: Analyzing the quality metrics collected during article creation to identify areas for improvement.
+4. **Testing and Refinement**: Testing the enhanced search workflow to ensure it produces high-quality, well-cited knowledge base articles.
 
-5. **Additional Tool Implementation**: Planning for the implementation of additional search and validation tools to enhance the system's capabilities.
+5. **Documentation**: Updating code documentation, creating user guides, and documenting the new workflow.
 
 ## Recent Changes
 
-We have made significant progress in migrating to Google's Gemini models, implementing the end-to-end workflow, metrics collection system, MLflow integration, streamlining the CLI interface, and developing a comprehensive testing framework:
+We have made significant progress in migrating to Google's Gemini models, implementing the end-to-end workflow, metrics collection system, MLflow integration, streamlining the CLI interface, developing a comprehensive testing framework, and designing an enhanced search and knowledge synthesis workflow:
 
 1. **Migration to Google Gemini Models**:
    - Refactored the codebase to use Google's Gemini 2.0 Flash models instead of OpenAI models
@@ -94,50 +106,81 @@ We have made significant progress in migrating to Google's Gemini models, implem
         - Passed `magic=True` to the `crawler.arun()` call.
     - Updated `.clinerules` to reflect user preference of not auto-fixing Flake8 errors.
 
+12. **Enhanced Search Workflow Design**:
+    - Designed a comprehensive search workflow that leverages Google Scholar and Semantic Scholar
+    - Created a detailed design document for the enhanced search and knowledge synthesis workflow
+    - Defined Pydantic models for paper metadata, search terms, and knowledge topics
+    - Designed a hierarchical storage structure for organizing research materials
+    - Defined agent roles and prompt templates for each stage of the workflow
+    - Decided to not rely on the PubMedTool due to implementation issues
+    - Planned for using the Marker package for PDF parsing
+
 ## Next Steps
 
 The immediate next steps for the project are:
 
-### Phase 1: Testing and Refinement (2-3 weeks)
+### Phase 1: Core Infrastructure (1-2 weeks)
 
-1. **Unit Testing**:
-   - Test individual agents, tools, and components
-   - Validate model constraints
-   - Test error handling
+1. **Knowledge Models Implementation**: Completed ✅
+   - Implemented PaperSource, SearchTerm, and KnowledgeTopic models
+   - Created storage utilities for these models
+   - Implemented directory structure creation and management
+   - Created comprehensive tests for all models
+   - Created example script demonstrating the knowledge models and directory utilities
 
-2. **Integration Testing**:
-   - Test agent interactions
-   - Validate workflow execution
-   - Test storage and retrieval
+2. **Search Coordinator Implementation**: Completed ✅
+   - Implemented AsyncSearchCoordinator with caching and error handling
+   - Implemented SearchCache with disk-based and in-memory caching
+   - Implemented RetryStrategy with exponential backoff
+   - Integrated DirectGoogleScholarTool and SemanticScholarTool
+   - Added comprehensive tests for all components
+   - Created example script demonstrating usage
 
-3. **End-to-End Testing**:
-   - Create complete articles on various topics
-   - Validate output quality and structure
-   - Test CLI functionality
+3. **PDF Management Implementation**: Completed ✅
+   - Implemented PDFDownloadManager class for async PDF downloads with caching
+   - Created MarkerWrapper class to interface with the Marker package
+   - Implemented PDFProcessor class to orchestrate the download and parsing process
+   - Added error handling and retry logic
+   - Implemented tracking of failed PDFs for potential fallback processing
+   - Added Gemini integration for improved PDF parsing
+   - Created PDFProcessorTool for agent use
+   - Added comprehensive tests for all components
+   - Created example script demonstrating usage
+   - Integrated with the research crew workflow
 
-4. **Performance Optimization**:
-   - Identify and address bottlenecks
-   - Implement caching strategies
-   - Optimize API usage
+### Phase 2: Agent Implementation (2-3 weeks)
 
-5. **Documentation**:
-   - Update code documentation
-   - Create user guides
-   - Document API usage and rate limits
+1. **Outline and Search Term Generation**:
+   - Implement outline generator agent
+   - Implement search term generator agent
+   - Create prompts and test with various topics
 
-### Phase 2: Additional Tool Implementation (1-2 weeks)
+2. **Content Processing Agents**:
+   - Implement related term analyzer agent
+   - Implement content distiller agent
+   - Create prompts and test with sample content
 
-1. **Additional Search Tools**:
-   - Implement ArXivSearchTool for searching academic papers
+3. **Synthesis and Review Agents**:
+   - Implement knowledge synthesizer agent
+   - Implement quality reviewer agent
+   - Create prompts and test with sample content
 
-2. **Additional Validation Tools**:
-   - Implement StructureValidatorTool for validating article structure
-   - Implement HallucinationDetectorTool for detecting hallucinations in generated content
+### Phase 3: Workflow Integration (2-3 weeks)
 
-3. **Tool Factory**:
-   - Implement a factory pattern for creating tools
-   - Add dynamic tool configuration
-   - Create tool templates for different types of tools
+1. **Workflow Orchestration**:
+   - Implement workflow manager
+   - Create state management for the workflow
+   - Implement error recovery and resumption
+
+2. **CLI Integration**:
+   - Update CLI to support the new workflow
+   - Add commands for each phase of the workflow
+   - Implement progress tracking and reporting
+
+3. **Testing and Refinement**:
+   - Create comprehensive tests for each component
+   - Test end-to-end workflow with various topics
+   - Refine based on test results
 
 ## Active Decisions and Considerations
 
@@ -153,7 +196,7 @@ The immediate next steps for the project are:
 
 ### Technical Considerations
 
-1. **API Selection**: We're using the SerperDev API for web search, the Entrez API for PubMed search, and the Semantic Scholar API for academic paper search. These APIs provide structured data that can be easily processed by the agents.
+1. **API Selection**: We're using the SerperDev API for web search and the Semantic Scholar API for academic paper search. We've decided not to rely on the PubMed tool due to implementation issues. The DirectGoogleScholarTool provides direct access to Google Scholar without requiring an API key.
 
 2. **LLM Provider**: We're using Google's Gemini 2.0 Flash model for the agents, as it provides a good balance of performance, quality, and cost with its 1M token context window.
 
@@ -181,15 +224,31 @@ The immediate next steps for the project are:
 
 ### Current Priorities
 
-1. **Gemini Integration Testing**: Testing the system with Gemini models to ensure compatibility and optimal performance.
+1. **Search Coordinator Implementation**: Completed ✅
+   - Implemented AsyncSearchCoordinator with caching and error handling
+   - Implemented SearchCache with disk-based and in-memory caching
+   - Implemented RetryStrategy with exponential backoff
+   - Integrated DirectGoogleScholarTool and SemanticScholarTool
+   - Added comprehensive tests for all components
+   - Created example script demonstrating usage
 
-2. **Testing and Refinement**: Implementing comprehensive testing for the system and refining the end-to-end workflow.
+2. **PDF Management Implementation**: Completed ✅
+   - Implemented PDFDownloadManager class for async PDF downloads with caching
+   - Created MarkerWrapper class to interface with the Marker package
+   - Implemented PDFProcessor class to orchestrate the download and parsing process
+   - Added error handling and retry logic
+   - Implemented tracking of failed PDFs for potential fallback processing
+   - Added Gemini integration for improved PDF parsing
+   - Created PDFProcessorTool for agent use
+   - Added comprehensive tests for all components
+   - Created example script demonstrating usage
+   - Integrated with the research crew workflow
 
-3. **Performance Optimization**: Optimizing the system for better performance and resource usage.
+3. **Agent Implementation**: Developing specialized agents for outline generation, search term generation, related term analysis, content distillation, knowledge synthesis, and quality review.
 
-4. **Documentation**: Updating code documentation, creating user guides, and documenting API usage and rate limits.
+4. **Workflow Integration**: Implementing the knowledge synthesis workflow manager with state management and error recovery.
 
-4. **Quality Metrics Analysis**: Analyzing the quality metrics collected during article creation to identify areas for improvement.
+5. **Testing and Documentation**: Creating comprehensive tests and documentation for all components.
 
 ## Implementation Status
 
@@ -203,12 +262,16 @@ The immediate next steps for the project are:
 | Workflow System | Completed | Research, content creation, review, and end-to-end workflows implemented |
 | CLI Integration | Completed | Research, create, review, generate, metrics, and visualize_flow commands implemented |
 | Metrics Collection | Completed | Quality metrics tracking and dashboard generation implemented |
+| Knowledge Models | Completed | PaperSource, SearchTerm, and KnowledgeTopic models implemented |
+| Knowledge Directory | Completed | Directory structure for organizing research materials implemented |
+| Search Coordinator | Completed | AsyncSearchCoordinator with caching, retry logic, and tests implemented |
+| PDF Management | Completed | PDFDownloadManager, MarkerWrapper, PDFProcessor, and PDFProcessorTool implemented with tests |
 | Testing and Refinement | In Progress | Unit testing framework established, validation tools tested, DirectGoogleScholarTool tests fixed |
 | Documentation | In Progress | Code documentation in progress, test documentation added |
 
 ## Recent Insights
 
-From our implementation of the end-to-end workflow and metrics collection system, we've gained several insights:
+From our implementation of the end-to-end workflow, metrics collection system, and design of the enhanced search workflow, we've gained several insights:
 
 1. **Flow-Based Architecture**: The value of a flow-based architecture for AI workflows is evident in the end-to-end workflow implementation. It provides a structured, event-driven approach to AI workflows that allows for better state management, error handling, and visualization.
 
@@ -233,3 +296,17 @@ From our implementation of the end-to-end workflow and metrics collection system
 11. **Pydantic Compatibility**: The importance of properly annotating class variables in Pydantic models is evident from our testing framework development. Using ClassVar annotations for class-level variables that are not meant to be model fields is essential for compatibility with newer versions of Pydantic.
 
 12. **Quality Filtering**: The value of quality filtering in search tools is evident from our implementation of the SemanticScholarTool. Filtering papers by citation count and other quality metrics helps ensure that the agents have access to high-quality, reliable sources for their research and fact-checking.
+
+13. **Structured Knowledge Organization**: The importance of a structured approach to organizing research materials is clear from our design of the knowledge directory system. A hierarchical structure with clear metadata makes it easier to manage and synthesize information from multiple sources.
+
+14. **PDF Processing**: The need for robust PDF processing capabilities is evident from our plan to use the Marker package. Converting PDFs to markdown format makes it easier for LLMs to process and extract relevant information.
+
+15. **Search Term Expansion**: The value of expanding search terms based on related terms from Google Scholar is clear from our design of the related term analyzer. This helps ensure comprehensive coverage of the topic and reduces the risk of missing important information.
+
+16. **Agent Specialization**: The benefits of specialized agents for different stages of the knowledge synthesis process are reinforced by our design. Each agent can focus on a specific task and leverage the appropriate LLM model for that task.
+
+17. **Asynchronous Search Coordination**: The implementation of the AsyncSearchCoordinator has demonstrated the value of asynchronous programming for search operations. By running searches in parallel across multiple sources, we can significantly reduce the overall search time while still providing comprehensive coverage.
+
+18. **Multi-Level Caching**: The implementation of both in-memory and disk-based caching in the SearchCache has shown the importance of multi-level caching for search operations. In-memory caching provides fast access to frequently used results, while disk-based caching ensures persistence across sessions.
+
+19. **Retry Logic with Exponential Backoff**: The implementation of the RetryStrategy with exponential backoff has demonstrated the importance of robust error handling for API calls. This approach helps manage rate limits and transient errors, improving the reliability of the search process.

@@ -36,6 +36,9 @@ INSTALL_REQUIRES = [
     "biopython",  # Added for PubMed search
     "crawl4ai",   # Added for web scraping
     "beautifulsoup4",  # Added for HTML parsing
+    "marker-pdf",  # Added for PDF parsing
+    "aiohttp",    # Added for async HTTP requests
+    "aiofiles",   # Added for async file operations
 ]
 
 EXTRAS_REQUIRE = {
